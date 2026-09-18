@@ -7,6 +7,24 @@ class MainConfigurationTests(unittest.TestCase):
     def test_openrouter_models_use_zero_cost_configuration(self) -> None:
         source = Path(__file__).parents[1].joinpath("main.py").read_text()
         module = ast.parse(source)
+        bot_class = next(
+            node
+            for node in module.body
+            if isinstance(node, ast.ClassDef)
+            and node.name == "SummerTemplateBot2026"
+        )
+        validation_samples = next(
+            node.value
+            for node in bot_class.body
+            if isinstance(node, ast.Assign)
+            and any(
+                isinstance(target, ast.Name)
+                and target.id == "_structure_output_validation_samples"
+                for target in node.targets
+            )
+        )
+        self.assertEqual(validation_samples.value, 1)
+
         bot_call = next(
             node
             for node in ast.walk(module)
@@ -42,16 +60,13 @@ class MainConfigurationTests(unittest.TestCase):
                 configured_model = llms.get(purpose)
                 self.assertIsInstance(configured_model, ast.Call)
 
-                model_keyword = next(
-                    (
-                        keyword
-                        for keyword in configured_model.keywords
-                        if keyword.arg == "model"
-                    ),
-                    None,
-                )
-                self.assertIsNotNone(model_keyword)
-                self.assertEqual(model_keyword.value.value, expected_model)
+                kwargs = {
+                    keyword.arg: keyword.value
+                    for keyword in configured_model.keywords
+                }
+                self.assertEqual(kwargs["model"].value, expected_model)
+                self.assertEqual(kwargs["timeout"].value, 120)
+                self.assertEqual(kwargs["allowed_tries"].value, 3)
 
         self.assertEqual(llms["researcher"].value, "no_research")
 

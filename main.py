@@ -127,7 +127,7 @@ class SummerTemplateBot2026(ForecastBot):
         1  # Set this to whatever works for your search-provider/ai-model rate limits
     )
     _concurrency_limiter = asyncio.Semaphore(_max_concurrent_questions)
-    _structure_output_validation_samples = 2
+    _structure_output_validation_samples = 1
 
     ##################################### RESEARCH #####################################
 
@@ -681,15 +681,21 @@ if __name__ == "__main__":
             "default": GeneralLlm(
                 model="openrouter/openrouter/free",
                 temperature=0.3,
+                timeout=120,
+                allowed_tries=3,
             ),
             "summarizer": GeneralLlm(
                 model="openrouter/openrouter/free",
                 temperature=0.3,
+                timeout=120,
+                allowed_tries=3,
             ),
             "researcher": "no_research",
             "parser": GeneralLlm(
                 model="openrouter/openrouter/free",
                 temperature=0.3,
+                timeout=120,
+                allowed_tries=3,
             ),
         },
     )
