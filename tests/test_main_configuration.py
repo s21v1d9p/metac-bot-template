@@ -32,9 +32,9 @@ class MainConfigurationTests(unittest.TestCase):
             if isinstance(key, ast.Constant)
         }
         expected_models = {
-            "default": "openrouter/qwen/qwen3.8-27b:free",
-            "summarizer": "openrouter/qwen/qwen3.8-27b:free",
-            "parser": "openrouter/qwen/qwen3.8-27b:free",
+            "default": "openrouter/openrouter/free",
+            "summarizer": "openrouter/openrouter/free",
+            "parser": "openrouter/openrouter/free",
         }
 
         for purpose, expected_model in expected_models.items():

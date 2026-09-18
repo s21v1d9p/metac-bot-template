@@ -679,16 +679,16 @@ if __name__ == "__main__":
         # Stay within OpenRouter's zero-credit free-model request allowance.
         llms={
             "default": GeneralLlm(
-                model="openrouter/qwen/qwen3.8-27b:free",
+                model="openrouter/openrouter/free",
                 temperature=0.3,
             ),
             "summarizer": GeneralLlm(
-                model="openrouter/qwen/qwen3.8-27b:free",
+                model="openrouter/openrouter/free",
                 temperature=0.3,
             ),
             "researcher": "no_research",
             "parser": GeneralLlm(
-                model="openrouter/qwen/qwen3.8-27b:free",
+                model="openrouter/openrouter/free",
                 temperature=0.3,
             ),
         },
