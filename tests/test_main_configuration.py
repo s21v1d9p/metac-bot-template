@@ -4,7 +4,7 @@ from pathlib import Path
 
 
 class MainConfigurationTests(unittest.TestCase):
-    def test_openrouter_models_respect_provider_privacy_settings(self) -> None:
+    def test_openrouter_models_use_zero_cost_configuration(self) -> None:
         source = Path(__file__).parents[1].joinpath("main.py").read_text()
         module = ast.parse(source)
         bot_call = next(
@@ -32,10 +32,9 @@ class MainConfigurationTests(unittest.TestCase):
             if isinstance(key, ast.Constant)
         }
         expected_models = {
-            "default": "openrouter/minimax/minimax-m2.5",
-            "summarizer": "openrouter/minimax/minimax-m2.5",
-            "researcher": "openrouter/minimax/minimax-m2.5:online",
-            "parser": "openrouter/minimax/minimax-m2.5",
+            "default": "openrouter/qwen/qwen3.8-27b:free",
+            "summarizer": "openrouter/qwen/qwen3.8-27b:free",
+            "parser": "openrouter/qwen/qwen3.8-27b:free",
         }
 
         for purpose, expected_model in expected_models.items():
@@ -53,6 +52,15 @@ class MainConfigurationTests(unittest.TestCase):
                 )
                 self.assertIsNotNone(model_keyword)
                 self.assertEqual(model_keyword.value.value, expected_model)
+
+        self.assertEqual(llms["researcher"].value, "no_research")
+
+        predictions_keyword = next(
+            keyword
+            for keyword in bot_call.keywords
+            if keyword.arg == "predictions_per_research_report"
+        )
+        self.assertEqual(predictions_keyword.value.value, 1)
 
 
 if __name__ == "__main__":

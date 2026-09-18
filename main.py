@@ -669,28 +669,25 @@ if __name__ == "__main__":
 
     template_bot = SummerTemplateBot2026(
         research_reports_per_question=1,
-        predictions_per_research_report=5,
+        predictions_per_research_report=1,
         use_research_summary_to_forecast=False,
         publish_reports_to_metaculus=publish_to_metaculus,
         folder_to_save_reports_to=None,
         skip_previously_forecasted_questions=True,
         extra_metadata_in_explanation=True,
-        # Keep requests on providers allowed by this OpenRouter account.
+        # Stay within OpenRouter's zero-credit free-model request allowance.
         llms={
             "default": GeneralLlm(
-                model="openrouter/minimax/minimax-m2.5",
+                model="openrouter/qwen/qwen3.8-27b:free",
                 temperature=0.3,
             ),
             "summarizer": GeneralLlm(
-                model="openrouter/minimax/minimax-m2.5",
+                model="openrouter/qwen/qwen3.8-27b:free",
                 temperature=0.3,
             ),
-            "researcher": GeneralLlm(
-                model="openrouter/minimax/minimax-m2.5:online",
-                temperature=0.1,
-            ),
+            "researcher": "no_research",
             "parser": GeneralLlm(
-                model="openrouter/minimax/minimax-m2.5",
+                model="openrouter/qwen/qwen3.8-27b:free",
                 temperature=0.3,
             ),
         },
