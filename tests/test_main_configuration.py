@@ -62,6 +62,17 @@ class MainConfigurationTests(unittest.TestCase):
         )
         self.assertEqual(predictions_keyword.value.value, 1)
 
+        summarize_keyword = next(
+            (
+                keyword
+                for keyword in bot_call.keywords
+                if keyword.arg == "enable_summarize_research"
+            ),
+            None,
+        )
+        self.assertIsNotNone(summarize_keyword)
+        self.assertFalse(summarize_keyword.value.value)
+
 
 if __name__ == "__main__":
     unittest.main()
