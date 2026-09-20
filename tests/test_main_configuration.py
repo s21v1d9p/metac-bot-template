@@ -88,6 +88,26 @@ class MainConfigurationTests(unittest.TestCase):
         self.assertIsNotNone(summarize_keyword)
         self.assertFalse(summarize_keyword.value.value)
 
+    def test_test_mode_limits_smoke_test_to_one_question(self) -> None:
+        source = Path(__file__).parents[1].joinpath("main.py").read_text()
+        module = ast.parse(source)
+
+        question_slice = next(
+            (
+                node
+                for node in ast.walk(module)
+                if isinstance(node, ast.Subscript)
+                and isinstance(node.value, ast.Name)
+                and node.value.id == "test_questions"
+                and isinstance(node.slice, ast.Slice)
+            ),
+            None,
+        )
+
+        self.assertIsNotNone(question_slice)
+        self.assertIsNone(question_slice.slice.lower)
+        self.assertEqual(question_slice.slice.upper.value, 1)
+
 
 if __name__ == "__main__":
     unittest.main()
