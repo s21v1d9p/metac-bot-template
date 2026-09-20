@@ -44,6 +44,9 @@ from forecasting_tools import (
 dotenv.load_dotenv()
 logger = logging.getLogger(__name__)
 
+FALL_FUTUREEVAL_2026_ID = 33121
+FALL_METACULUS_CUP_2026_ID = 33108
+
 
 class SummerTemplateBot2026(ForecastBot):
     """
@@ -700,12 +703,10 @@ if __name__ == "__main__":
         },
     )
 
-    # Per-mode tournament URL shown in the summary banner footer. These
-    # piggyback on the forecasting_tools SDK constants and need updating
-    # whenever those rotate seasons.
+    # Per-mode tournament URLs shown in the summary banner footer.
     TOURNAMENT_URLS = {
-        "tournament": "https://www.metaculus.com/tournament/summer-futureeval-2026/",
-        "metaculus_cup": "https://www.metaculus.com/tournament/metaculus-cup-summer-2025/",
+        "tournament": "https://www.metaculus.com/tournament/fall-futureeval-2026/",
+        "metaculus_cup": "https://www.metaculus.com/tournament/metaculus-cup-fall-2026/",
         "test_questions": "https://www.metaculus.com/tournament/bot-testing-area/",
     }
 
@@ -716,7 +717,7 @@ if __name__ == "__main__":
     if run_mode == "tournament":
         seasonal_tournament_reports = asyncio.run(
             template_bot.forecast_on_tournament(
-                client.CURRENT_AI_COMPETITION_ID, return_exceptions=True
+                FALL_FUTUREEVAL_2026_ID, return_exceptions=True
             )
         )
         minibench_reports = asyncio.run(
@@ -732,7 +733,7 @@ if __name__ == "__main__":
         template_bot.skip_previously_forecasted_questions = False
         forecast_reports = asyncio.run(
             template_bot.forecast_on_tournament(
-                client.CURRENT_METACULUS_CUP_ID, return_exceptions=True
+                FALL_METACULUS_CUP_2026_ID, return_exceptions=True
             )
         )
     elif run_mode == "test_questions":

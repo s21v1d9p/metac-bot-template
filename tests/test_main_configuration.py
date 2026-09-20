@@ -108,6 +108,29 @@ class MainConfigurationTests(unittest.TestCase):
         self.assertIsNone(question_slice.slice.lower)
         self.assertEqual(question_slice.slice.upper.value, 1)
 
+    def test_fall_2026_tournament_targets_are_explicit(self) -> None:
+        source = Path(__file__).parents[1].joinpath("main.py").read_text()
+        module = ast.parse(source)
+        assignments = {
+            target.id: node.value.value
+            for node in module.body
+            if isinstance(node, ast.Assign)
+            and isinstance(node.value, ast.Constant)
+            for target in node.targets
+            if isinstance(target, ast.Name)
+        }
+
+        self.assertEqual(assignments["FALL_FUTUREEVAL_2026_ID"], 33121)
+        self.assertEqual(assignments["FALL_METACULUS_CUP_2026_ID"], 33108)
+        self.assertIn(
+            "https://www.metaculus.com/tournament/fall-futureeval-2026/",
+            source,
+        )
+        self.assertIn(
+            "https://www.metaculus.com/tournament/metaculus-cup-fall-2026/",
+            source,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
