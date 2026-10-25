@@ -679,23 +679,25 @@ if __name__ == "__main__":
         folder_to_save_reports_to=None,
         skip_previously_forecasted_questions=True,
         extra_metadata_in_explanation=True,
-        # Stay within OpenRouter's zero-credit free-model request allowance.
+        # Stay within OpenRouter's zero-credit free-model request allowance. Pin specific :free
+        # models: the "openrouter/free" router can land on nvidia/nemotron-3.5-content-safety,
+        # which answers "User Safety: safe" instead of a forecast and fails the parse.
         llms={
             "default": GeneralLlm(
-                model="openrouter/openrouter/free",
+                model="openrouter/nvidia/nemotron-3-super-120b-a12b:free",
                 temperature=0.3,
                 timeout=120,
                 allowed_tries=3,
             ),
             "summarizer": GeneralLlm(
-                model="openrouter/openrouter/free",
+                model="openrouter/nvidia/nemotron-3-super-120b-a12b:free",
                 temperature=0.3,
                 timeout=120,
                 allowed_tries=3,
             ),
             "researcher": "no_research",
             "parser": GeneralLlm(
-                model="openrouter/openrouter/free",
+                model="openrouter/google/gemma-4-31b-it:free",
                 temperature=0.3,
                 timeout=120,
                 allowed_tries=3,

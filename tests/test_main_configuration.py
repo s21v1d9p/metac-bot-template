@@ -50,9 +50,9 @@ class MainConfigurationTests(unittest.TestCase):
             if isinstance(key, ast.Constant)
         }
         expected_models = {
-            "default": "openrouter/openrouter/free",
-            "summarizer": "openrouter/openrouter/free",
-            "parser": "openrouter/openrouter/free",
+            "default": "openrouter/nvidia/nemotron-3-super-120b-a12b:free",
+            "summarizer": "openrouter/nvidia/nemotron-3-super-120b-a12b:free",
+            "parser": "openrouter/google/gemma-4-31b-it:free",
         }
 
         for purpose, expected_model in expected_models.items():
